@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Card, Form, Button, Alert } from 'react-bootstrap'
 import { useRef, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
@@ -21,7 +22,7 @@ export default function Login() {
             await login(emailRef.current.value, passwordRef.current.value)
             navigate('/')
         } catch {
-            setError('Failed to sign in')
+            setError('Failed to log in')
         }
 
         setLoading(false)
@@ -42,7 +43,7 @@ export default function Login() {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type='password' ref={passwordRef} required />
                     </Form.Group>
-                    <Button disabled={loading} className='w-100' type='submit'>Log In</Button>
+                    <Button disabled={loading} className='w-100 mt-2' type='submit'>Log In</Button>
                 </Form>
             </Card.Body>
             <div className='w-100 text-center mt-2'>

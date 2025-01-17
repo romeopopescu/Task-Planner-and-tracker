@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { auth } from '../firebase'
+import { getAuth } from '../firebase'
 
 
 
@@ -19,7 +20,7 @@ export function AuthProvider({ children }) {
 
   //functia de login, daca nu mai vreau firebase, doar schimb functia
   function login(email, password) {
-    auth.createUserWithEmailAndPassword(email, password)
+    auth.signInWithEmailAndPassword(email, password)
   }
 
   function logout() {
