@@ -20,6 +20,10 @@ export default function SignUp() {
             passwordConfirmationRef.current.value) {
                 return setError('Passwords do not match')
         }
+
+        if (passwordRef.current.value.length < 6) {
+            return setError('Password must have at least 6 characters')
+        }
         
         try {
             setError('')

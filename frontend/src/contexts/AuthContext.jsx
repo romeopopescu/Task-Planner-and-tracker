@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { auth } from '../firebase'
-import { getAuth } from '../firebase'
 
 
 
@@ -15,17 +14,18 @@ export function AuthProvider({ children }) {
 
   //functia de signup, daca nu mai vreau firebase, doar schimb functia
   function signup(email, password) {
-    auth.createUserWithEmailAndPassword(email, password)
+    return auth.createUserWithEmailAndPassword(email, password)
   }
 
   //functia de login, daca nu mai vreau firebase, doar schimb functia
   function login(email, password) {
-    auth.signInWithEmailAndPassword(email, password)
+    return auth.signInWithEmailAndPassword(email, password)
   }
 
   function logout() {
     return auth.signOut()
   }
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {

@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { Card, Form, Button, Alert } from 'react-bootstrap'
 import { useRef, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
@@ -15,7 +14,7 @@ export default function Login() {
 
     async function handleSubmit(e) {
         e.preventDefault()
-
+        
         try {
             setError('')
             setLoading(true)
