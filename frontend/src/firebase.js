@@ -1,3 +1,4 @@
+//aici dau import din file-ul .env.local la cheile pentru firebase
 import firebase from "firebase/compat/app"
 import "firebase/compat/auth"
 import { initializeApp } from "firebase/app";

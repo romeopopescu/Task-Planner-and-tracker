@@ -9,7 +9,8 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-
+    //functia pentru a face logout-ul cu succes, 
+    // este called de buttonul de jos
     async function handleLogOut() {
         try {
             setError('')

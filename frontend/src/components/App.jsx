@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import './App.css'
+import '../App.css'
 import axios from "axios"
-import SignUp from './components/SignUp';
-import Dashboard from './components/Dashboard';
-import Login from './components/Login';
-import { AuthProvider } from './contexts/AuthContext';
+import SignUp from './SignUp';
+import Dashboard from './Dashboard';
+import Login from './Login';
+import { AuthProvider } from '../contexts/AuthContext';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 function App() {
