@@ -18,8 +18,9 @@
 //     console.log(`Server started on port ${port}`);
 // });
 const express = require('express');
-const sequelize = require('./config/sequelize');
+const sequelize = require('./config/database');
 const userRoutes = require('./routes/UserRoutes');
+const taskRoutes = require('./routes/TaskRoutes');
 
 const app = express();
 const port = 8080;
@@ -29,6 +30,7 @@ app.use(express.json());
 
 
 app.use('/api', userRoutes);
+app.use('/api', taskRoutes);
 
 //start the server
 (async () => {
