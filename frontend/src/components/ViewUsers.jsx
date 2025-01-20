@@ -1,4 +1,3 @@
-// ViewUsers.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { ListGroup, Card } from 'react-bootstrap';
@@ -40,7 +39,7 @@ const ViewUsers = () => {
           <ListGroup>
             {users.map((user) => (
               <ListGroup.Item key={user.id}>
-                {}{user.username} - {user.role}
+               ID:{user.id} - {user.username} - {user.role}
               </ListGroup.Item>
             ))}
           </ListGroup>

@@ -10,7 +10,6 @@ import ViewUsers from './components/ViewUsers';
 import TaskForm from './components/TaskForm';
 import TaskHistory from './components/TaskHistory';
 import TaskDetails from './components/TaskDetails.jsx';
-// ... other imports for TaskList, TaskForm, etc. (we'll add these later)
 
 const Layout = () => (
   <>
@@ -61,7 +60,6 @@ const router = createBrowserRouter([
     element: <Login />
   },
   
-  // ... other routes like 404 Not Found (we'll add these later)
 ]);
 
 

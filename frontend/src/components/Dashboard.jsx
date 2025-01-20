@@ -9,9 +9,9 @@ const Dashboard = () => {
     const [tasks, setTasks] = useState([]);
     const [username, setUsername] = useState('');
     const [searchId, setSearchId] = useState('');
-    const [userRole, setUserRole] = useState(null); // Default to `null` instead of an empty string
-    const [loadingRole, setLoadingRole] = useState(true); // State to track role loading
-    const [loadingTasks, setLoadingTasks] = useState(false); // State to track task fetching
+    const [userRole, setUserRole] = useState(null); 
+    const [loadingRole, setLoadingRole] = useState(true); 
+    const [loadingTasks, setLoadingTasks] = useState(false); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,13 +20,13 @@ const Dashboard = () => {
                 const token = localStorage.getItem('token');
                 const decodedToken = jwt_decode(token);
                 console.log(decodedToken);
-                setUserRole(decodedToken.role); // Set user role
+                setUserRole(decodedToken.role); 
                 
                 setUsername(decodedToken.username);
                 console.log(username);
-                setLoadingRole(false); // Mark role as loaded
+                setLoadingRole(false); 
 
-                setLoadingTasks(true); // Start fetching tasks
+                setLoadingTasks(true); 
                 let response;
                 let toFilter;
                 if (decodedToken.role === 'manager') {
@@ -34,14 +34,16 @@ const Dashboard = () => {
                   response = toFilter;
                   response.data = toFilter.data.filter(task => task.state !== 'CLOSED');
                 } else if (decodedToken.role === 'user') {
-                    response = await api.get(`/tasks?assignedUserId=${decodedToken.id}`);
+                  toFilter = await api.get(`/tasks?assignedUserId=${decodedToken.id}`);
+                  response = toFilter;
+                  response.data = toFilter.data.filter(task => task.state !== 'CLOSED');
                 }
 
-                setTasks(response?.data || []); // Set tasks or empty array
+                setTasks(response?.data || []); 
             } catch (error) {
                 console.error('Error fetching user role or tasks:', error);
             } finally {
-                setLoadingTasks(false); // Stop task loading
+                setLoadingTasks(false); 
             }
         };
 
@@ -52,7 +54,6 @@ const Dashboard = () => {
         e.preventDefault();
     try {
       if (searchId === '') {
-        // If searchId is empty, refetch the initial task list
         let response;
         if (userRole === 'manager') {
           response = await api.get('/tasks');
@@ -63,7 +64,6 @@ const Dashboard = () => {
         }
         setTasks(response?.data ||'');
       } else {
-        // Otherwise, search for the task with the given ID
         const response = await api.get(`/tasks/${searchId}`);
         setTasks([response.data]);
       }
@@ -73,41 +73,34 @@ const Dashboard = () => {
   };
 
   const handleEdit = (taskId) => {
-    // Use navigate to redirect to the edit page with the task ID
-    navigate(`/tasks/${taskId}/edit`, { state: { userRole } }); // Pass userRole as state
+    navigate(`/tasks/${taskId}/edit`, { state: { userRole } }); 
   };
 
 
     const handleDelete = async (taskId) => {
         try {
-          // Make API call to delete the task
           await api.delete(`/tasks/${taskId}`);
     
-          // Update the task list
           setTasks(tasks.filter((task) => task.id !== taskId));
         } catch (error) {
           console.error("Error deleting task:", error);
-          // ... (handle error, e.g., display error message)
         }
       };
 
-    // Delay rendering until userRole is loaded
     if (loadingRole) {
         return <div>Loading user role...</div>;
     }
 
-    // Render admin-specific content if userRole is 'admin'
     if (userRole === 'admin') {
         return (
-            <div>
-                <h2>Admin Dashboard</h2>
-                <p>Welcome, Administrator!</p>
+            <div className=''>
+                <h2 className='d-flex justify-content-center align-items-center mt-5'>Admin Dashboard</h2>
+                <p className='d-flex justify-content-center align-items-center mt-5'>Welcome, Administrator!</p>
                 
             </div>
         );
     }
 
-    // Render tasks and search for 'manager' and 'user'
     return (
         <div className="d-flex justify-content-center align-items-center mt-5">
   <Card style={{ width: '30rem' }} className="shadow">
@@ -134,7 +127,7 @@ const Dashboard = () => {
                 </Button>
               </Form>
 
-              <h4 className="mb-3">Your Tasks</h4>
+              <h4 className="mb-3">All Tasks</h4>
               {tasks.length === 0 ? (
                 <p className="text-muted">No tasks found.</p>
               ) : (

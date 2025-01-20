@@ -24,8 +24,8 @@ const MyNavbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setIsAuthenticated(false); // Update authentication status
-    navigate('/login'); // Redirect to login using navigate
+    setIsAuthenticated(false); 
+    navigate('/login'); 
   };
 
   return (
@@ -38,6 +38,7 @@ const MyNavbar = () => {
           <Nav className="me-auto">
             {isAuthenticated && userRole === 'admin' && (
               <>
+                <Nav.Link as={Link} to="/">Home</Nav.Link>
                 <Nav.Link as={Link} to="/users/create">Create User</Nav.Link>
                 <Nav.Link as={Link} to="/users">View Users</Nav.Link>
               </>
@@ -52,7 +53,7 @@ const MyNavbar = () => {
             {isAuthenticated && userRole === 'manager' && (
                  <Nav.Link as={Link} to="/tasks/new">Create Task</Nav.Link>
             )}
-            {isAuthenticated && ( // Only show logout button if authenticated
+            {isAuthenticated && ( 
             <Button variant="outline-danger" onClick={handleLogout}>
               Log Out
             </Button>

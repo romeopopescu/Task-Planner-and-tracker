@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import { Button, Card, Form} from 'react-bootstrap';
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -33,51 +34,59 @@ const CreateUser = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="role">Role:</label>
-        <select id="role" name="role" value={formData.role} onChange={handleChange}>
-          <option value="user">User</option>
-          <option value="manager">Manager</option>
-        </select>
-      </div>
-      {/* Conditionally render managerId field */}
-      {formData.role === 'user' && (
-        <div>
-          <label htmlFor="managerId">Manager ID:</label>
-          <input
-            type="number"
-            id="managerId"
-            name="managerId"
-            value={formData.managerId || ''}
-            onChange={handleChange}
-          />
-        </div>
-      )}
-      <button type="submit">Create User</button>
-      {error && <div className="error">{error}</div>}
-    </form>
-  );
+    <div className='d-flex justify-content-center align-items-center mt-5'>
+      <Card className='shadow'>
+        <Card.Body>
+          <h2 className='text-center mb-2'>Create user</h2>
+          <Form onSubmit={handleSubmit}>
+            <div className='mb-3'>
+              <label htmlFor="username">Username:</label>
+              <Form.Control
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </div>
+            <div className='mb-3'>
+              <label htmlFor="password">Password:</label>
+              <Form.Control
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+            <div className='mb-3'>
+              <label htmlFor="role">Role:</label>
+              <select id="role" name="role" value={formData.role} onChange={handleChange} className='form-select'>
+                <option value="user">User</option>
+                <option value="manager">Manager</option>
+              </select>
+            </div>
+            {formData.role === 'user' && (
+              <div className='mb-3'>
+                <label htmlFor="managerId">Manager ID:</label>
+                <Form.Control
+                  type="number"
+                  id="managerId"
+                  name="managerId"
+                  value={formData.managerId || ''}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
+            <div className='d-flex justify-content-center'>
+              <Button type="submit">Create User</Button>
+            </div>
+            {error && <div className="error d-flex justify-content-center">{error}</div>}
+          </Form>
+        </Card.Body>
+      </Card>
+    </div>
+      );
 };
 
 export default CreateUser;

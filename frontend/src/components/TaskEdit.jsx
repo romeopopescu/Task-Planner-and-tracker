@@ -8,7 +8,7 @@ const TaskEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { userRole } = location.state || { userRole: null }; // Get userRole from props
+  const { userRole } = location.state || { userRole: null }; 
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
@@ -46,9 +46,29 @@ const TaskEdit = () => {
       
     setFormData({
       ...formData,
-      [name]: name === 'assignedUserId' ? parseInt(value, 10) || null : value, // Ensure assignedUserId is a number or null
+      [name]: name === 'assignedUserId' ? parseInt(value, 10) || null : value,
     });
     console.log('state:', formData.state);
+  };
+
+  const handleCloseTask = async () => {
+    try {
+      await api.put(`/tasks/${id}`, { state: 'CLOSED' });
+      navigate('/');
+    } catch (error) {
+      console.error('Error closing task:', error);
+      setError('Failed to close task');
+    }
+  };
+
+  const handleCompleteTask = async () => {
+    try {
+      await api.put(`/tasks/${id}`, { state: 'COMPLETED' });
+      navigate('/');
+    } catch (error) {
+      console.error('Error completing task:', error);
+      setError('Failed to complete task');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -57,12 +77,23 @@ const TaskEdit = () => {
     setIsLoading(true);
     try {
       
+      console.log(formData);
+      if (userRole === 'manager' && formData.assignedUserId) {
+        
+        if (formData.state === 'OPEN') {
+          formData.state = 'PENDING';
+        }
+      }
       await api.put(`/tasks/${id}`, formData);
       console.log('Submitting formData:', formData);
-      navigate(-1); // Go back to the previous page after updating
+      navigate(-1); // te intoarce la pagina anterioara
     } catch (error) {
       console.error('Error updating task:', error);
-      setError('Failed to update task');
+      setError(
+        <div className="d-flex justify-content-center align-items-center vh-100"> 
+          <div className="text-danger">Failed to update task</div> 
+        </div>
+      );
     } finally {
       setIsLoading(false);
     }
@@ -92,32 +123,40 @@ const TaskEdit = () => {
               onChange={handleChange}
             />
           </div>
-          {/* Only show assignedUserId field for managers */}
+          {/* aratam assignedUserId doar pt managers */}
           {userRole === 'manager' && (
             <div className='mb-3'>
               <label htmlFor="assignedUserId">Assigned User ID:</label>
               <Form.Control
-                type="number" // Use type="number" for numeric input
+                type="number" 
                 id="assignedUserId"
                 name="assignedUserId"
-                value={formData.assignedUserId || ''} // Ensure a valid value for the input field
+                value={formData.assignedUserId || ''} 
                 onChange={handleChange}
               />
             </div>
           )}
           <div className='mb-3'>
-            <label htmlFor="state">State:</label>
-            <select id="state" className="form-select" name="state" value={formData.state} onChange={handleChange}>
-              <option value="PENDING">PENDING</option>
-              <option value="COMPLETED">COMPLETED</option>
-              {/* Only allow managers to set the state to CLOSED */}
-              {userRole === 'manager' && <option value="CLOSED">CLOSED</option>}
-            </select>
+                <label htmlFor="state">State:</label>
+                <p>{formData.state}</p> 
           </div>
+
+          {userRole === 'manager' && formData.state === 'COMPLETED' && (
+              <Button variant="primary"className='m-3' onClick={handleCloseTask}>
+                Close Task
+              </Button>
+            )}
+            {userRole === 'user' && formData.state === 'PENDING' && (
+              <Button variant="primary"className='m-3' onClick={handleCompleteTask}>
+                Complete Task
+              </Button>
+            )}
+
           {isLoading ? (
-            <Button type="submit" disabled>Updating...</Button>
+            <Button type="submit"className='m-3' disabled>Updating...</Button>
           ) : (
-            <Button className='' type="submit">Update Task</Button>
+            <Button className='m-3' type="submit">Update Task</Button>
+            
           )}
           {error && <div className="error">{error}</div>}
         </Form>

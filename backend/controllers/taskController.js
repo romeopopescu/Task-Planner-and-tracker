@@ -5,7 +5,6 @@ const getAllTasks = async (req, res) => {
     try {
         let tasks;
         if (req.user.role === 'manager') {
-            // Managers can see all tasks
             tasks = await Task.findAll({
                 include: [
                     {model: User, as: 'assignedUser'},
@@ -13,7 +12,6 @@ const getAllTasks = async (req, res) => {
                 ],
             });
         } else {
-            // Simple users can only see tasks assigned to them
             tasks = await Task.findAll({
                 where: {
                     assignedUserId: req.user.id,
@@ -44,7 +42,6 @@ const getTaskById = async (req, res) => {
             return res.status(404).json({error: 'Task not found'});
         }
 
-        // Check if the user is authorized to view this task
         if (req.user.role !== 'manager' && task.assignedUserId !== req.user.id) {
             return res.status(403).json({error: 'Forbidden'});
         }
@@ -62,7 +59,6 @@ const createTask = async (req, res) => {
       const { description, assignedUserId } = req.body;
       const managerId = req.user.id;
 
-      // Check if the assigned user exists and has the current manager as their manager
       
 
       const newTask = await Task.create({
@@ -91,17 +87,14 @@ const updateTask = async (req, res) => {
       return res.status(404).json({ error: 'Task not found' });
     }
 
-    // Check if the user is authorized to update this task
     if (req.user.role !== 'manager' && task.assignedUserId !== req.user.id) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
-    // Only allow updating certain fields based on user role
     if (req.user.role === 'manager') {
       task.description = description || task.description;
      
 
-      // If re-assigning the task, check if the new assigned user is valid
       if (assignedUserId !== undefined) {
         const newAssignedUser = await User.findByPk(assignedUserId);
         if (!newAssignedUser || newAssignedUser.managerId !== req.user.id) {
@@ -113,14 +106,12 @@ const updateTask = async (req, res) => {
         task.state = state;
       }
 
-      // Managers can only set the state to CLOSED if it's currently COMPLETED
       if (state === 'CLOSED' && task.state === 'COMPLETED') {
         task.state = state;
-        task.closedBy = req.user.id; // Record who closed the task
+        task.closedBy = req.user.id; 
         task.closedAt = new Date();
       }
     } else if (req.user.role === 'user') {
-      // Users can only change the state to COMPLETED
       if (state === 'PENDING' && task.state === 'OPEN') {
         console.log(state);
         console.log(task.state);
@@ -144,7 +135,6 @@ const deleteTask = async (req, res) => {
     try {
         const taskId = req.params.id;
 
-        // Only allow managers to delete tasks
         if (req.user.role !== 'manager') {
             return res.status(403).json({error: 'Forbidden'});
         }
@@ -166,8 +156,7 @@ const getTaskHistoryForUser = async (req, res) => {
     try {
         const userId = req.params.userId;
 
-        // Only allow managers to access task history for any user,
-        // or users to access their own history
+        
         if (req.user.role !== 'manager' && req.user.id !== parseInt(userId, 10)) {
             return res.status(403).json({error: 'Forbidden'});
         }

@@ -22,7 +22,6 @@ const getUserById = async (req, res) => {
     try {
         const userId = req.params.id;
 
-        // Only allow admin or the user themselves to access user details
         if (req.user && (req.user.role !== 'admin' && req.user.id !== parseInt(userId, 10))) {
             return res.status(403).json({ error: 'Forbidden' });
         }
@@ -38,11 +37,9 @@ const getUserById = async (req, res) => {
     }
 };
 
-// Create a new user
 const createUser = async (req, res) => {
     console.log('req.user', req.user);
     try {
-        // Check if req.user is defined (if authMiddleware is enabled)
         const isAdmin = (req.user.role === 'admin'); // If req.user is undefined, assume admin
 
         if (!isAdmin) {
@@ -51,7 +48,6 @@ const createUser = async (req, res) => {
 
         const { username, password, role, managerId } = req.body;
 
-         // If the role is 'user' and a managerId is provided, check if the managerId exists and is a manager
         if (role === 'user' && managerId) {
             const manager = await User.findByPk(managerId);
             if (!manager || manager.role !== 'manager') {
@@ -59,7 +55,6 @@ const createUser = async (req, res) => {
         }
       }
 
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await User.create({
@@ -75,12 +70,10 @@ const createUser = async (req, res) => {
     }
 };
 
-// Update an existing user
 const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
 
-        // Only allow admin to update users
         if (req.user.role !== 'admin') {
             return res.status(403).json({ error: 'Forbidden' });
         }
@@ -92,7 +85,6 @@ const updateUser = async (req, res) => {
 
         const { username, password, role, managerId } = req.body;
 
-        // Hash the password if it's being updated
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
             user.password = hashedPassword;
@@ -110,12 +102,10 @@ const updateUser = async (req, res) => {
     }
 };
 
-// Delete a user
 const deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;
 
-        // Only allow admin to delete users
         if (req.user.role !== 'admin') {
             return res.status(403).json({ error: 'Forbidden' });
         }
@@ -133,7 +123,6 @@ const deleteUser = async (req, res) => {
     }
 };
 
-// Export all functions
 export {
     getAllUsers,
     getUserById,

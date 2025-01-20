@@ -8,8 +8,8 @@ const TaskHistory = () => {
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState(""); // State for the user ID input
-  const [noTasksFound, setNoTasksFound] = useState(false); // State to track if no tasks were found
+  const [userId, setUserId] = useState(""); 
+  const [noTasksFound, setNoTasksFound] = useState(false);
 
   useEffect(() => {
     const fetchTaskHistory = async () => {
@@ -38,7 +38,7 @@ const TaskHistory = () => {
       const fetchedTasks = response?.data || [];
       setTasks(fetchedTasks);
       setNoTasksFound(fetchedTasks.length === 0);
-      setError(null); // Clear previous error
+      setError(null); 
     } catch (error) {
       console.error("Error fetching task history:", error);
       setError("Failed to fetch task history.");
@@ -55,7 +55,6 @@ const TaskHistory = () => {
         <Card.Body>
       <h2 className="text-center mb-3">Task History</h2>
 
-      {/* Search form is always displayed for managers */}
       {userRole === "manager" && (
         <Form onSubmit={handleSearch} className="d-flex mb-4">
           <Form.Control
@@ -69,14 +68,10 @@ const TaskHistory = () => {
         </Form>
       )}
 
-      {/* Display errors */}
       {error && <div className="error">{error}</div>}
 
-      {/* Show "no tasks found" message */}
       {noTasksFound && <p>No tasks found for the specified user.</p>}
 
-      {/* Display task list */}
-        {/* Display task list */}
         {Array.isArray(tasks) && tasks.length > 0 && (
         <ListGroup>
           {tasks.map((task) => (

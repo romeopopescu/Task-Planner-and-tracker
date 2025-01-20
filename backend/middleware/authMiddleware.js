@@ -7,7 +7,7 @@ const authMiddleware = (req, res, next) => {
         return res.status(401).json({error: 'Missing token'});
     }
 
-    const token = authHeader; // Directly use the authHeader as the token
+    const token = authHeader;
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

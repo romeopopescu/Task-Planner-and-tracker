@@ -1,4 +1,3 @@
-// TaskForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
@@ -7,7 +6,7 @@ import { Card, Form, Button} from 'react-bootstrap';
 const TaskForm = () => {
   const [formData, setFormData] = useState({
     description: '',
-    assignedUserId: '', // Use a text input for assignedUserId
+    assignedUserId: '', 
   });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -24,8 +23,7 @@ const TaskForm = () => {
     setError(null);
 
     try {
-      // Convert assignedUserId to a number before sending the request
-      const numericAssignedUserId = parseInt(formData.assignedUserId, 10) || null; // Handle empty input
+      const numericAssignedUserId = parseInt(formData.assignedUserId, 10) || null; 
       await api.post('/tasks', { ...formData, assignedUserId: numericAssignedUserId });
       navigate('/');
     } catch (error) {

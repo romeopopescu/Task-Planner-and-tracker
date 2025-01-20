@@ -12,7 +12,6 @@ env.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -24,7 +23,6 @@ app.use(cors(corsOptions));
 
 config_fk();
 
-// Routes
 app.use('/auth', authRoutes);
 //app.use('/users', userRoutes);
 app.use('/users', authMiddleware,  userRoutes);
@@ -39,15 +37,14 @@ app.use((err, req, res, next) => {
 
 
 
-// Test database connection and synchronize models
 (async () => {
     try {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
-        await sequelize.sync({ force: false }); // Use { force: true } with caution in development!
+        await sequelize.sync({ force: false }); 
         console.log('Database synchronized!');
 
-        // Start the server
+        // starting the server
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });

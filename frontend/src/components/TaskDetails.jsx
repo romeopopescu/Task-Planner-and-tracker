@@ -1,11 +1,11 @@
-// TaskDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
 import jwt_decode from 'jwt-decode';
+import { Card } from 'react-bootstrap';
 
 const TaskDetails = () => {
-  const { id } = useParams(); // Get the task ID from the URL parameters
+  const { id } = useParams(); 
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +13,6 @@ const TaskDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the task details using the task ID
     const fetchTask = async () => {
       try {
         const response = await api.get(`/tasks/${id}`);
@@ -32,9 +31,9 @@ const TaskDetails = () => {
     fetchTask();
   }, [id]);
 
-  // Function to handle editing the task
+  // functia care se ocupa cu editarea taskului
   const handleEdit = () => {
-    navigate(`/tasks/${id}/edit`); // Navigate to the edit page for the task
+    navigate(`/tasks/${id}/edit`); 
   };
 
   if (loading) {
@@ -46,40 +45,43 @@ const TaskDetails = () => {
   }
 
   return (
-    <div>
-      <h2>Task Details</h2>
+    <div className='d-flex justify-content-center align-items-center mt-5'>
+        <Card className='shadow'>
+            <Card.Body>
+                <h2>Task Details</h2>
 
-      {/* Display task ID, manager ID, and other details */}
-      <div>
-        <strong>ID:</strong> {task.id}
-      </div>
-      <div>
-        <strong>Manager ID:</strong> {task.managerId}
-      </div>
-      <div>
-        <strong>Description:</strong> {task.description}
-      </div>
-      <div>
-        <strong>State:</strong> {task.state}
-      </div>
-      <div>
-        <strong>Assigned User ID:</strong> {task.assignedUserId}
-      </div>
-      {/* Conditionally display closedAt and closedBy */}
-      {task.closedAt && (
-        <div>
-          <strong>Closed At:</strong> {task.closedAt}
-        </div>
-      )}
-      {task.closedBy && (
-        <div>
-          <strong>Closed By:</strong> {task.closedBy}
-        </div>
-      )}
-      { /* Show edit button if the user is a manager and created the task */
-      (userRole === 'manager' && task.managerId === jwt_decode(localStorage.getItem('token')).id) && (
-        <button onClick={handleEdit}>Edit Task</button>
-      )}
+                {/* detaliile despre task */}
+                <div>
+                    <strong>ID:</strong> {task.id}
+                </div>
+                <div>
+                    <strong>Manager ID:</strong> {task.managerId}
+                </div>
+                <div>
+                    <strong>Description:</strong> {task.description}
+                </div>
+                <div>
+                    <strong>State:</strong> {task.state}
+                </div>
+                <div>
+                    <strong>Assigned User ID:</strong> {task.assignedUserId}
+                </div>
+                {task.closedAt && (
+                    <div>
+                    <strong>Closed At:</strong> {task.closedAt}
+                    </div>
+                )}
+                {task.closedBy && (
+                    <div>
+                    <strong>Closed By:</strong> {task.closedBy}
+                    </div>
+                )}
+                { 
+                (userRole === 'manager' && task.managerId === jwt_decode(localStorage.getItem('token')).id) && (
+                    <button onClick={handleEdit}>Edit Task</button>
+                )}
+            </Card.Body>
+        </Card>
     </div>
   );
 };

@@ -32,7 +32,6 @@ const login = async (req, res) => {
     }
 };
 
-// Export the functions
 export {
     login
 };
