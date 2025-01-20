@@ -1,33 +1,44 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../config/database');
+import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
 const User = sequelize.define('User', {
-    uid: {
-        type: DataTypes.STRING,
-        unique: true,
-    },
     id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
-    email: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     role: {
-        type: DataTypes.ENUM('user', 'manager', 'admin'),
-        allowNull: false,
-        defaultValue: 'user',
+        type: DataTypes.ENUM('admin', 'manager', 'user'),
+        allowNull: false
     },
     managerId: {
         type: DataTypes.INTEGER,
-        unique: true,
         allowNull: true,
+        references: {
+            model: 'User', // Note: Using string reference here
+            key: 'id'
+        },
+        validate: {
+            isValidManagerId(value) {
+                if (this.role === 'user' && !value) {
+                    throw new Error('A simple user must have a manager assigned.');
+                }
+            }
+        }
     }
-}, {
-    timestamps: true,
 });
 
-module.exports = User;
+
+
+export default User;
+

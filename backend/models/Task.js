@@ -1,44 +1,61 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const User = require('./User');
+import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
+import User from "./User.js"; // Import User before defining Task
 
 const Task = sequelize.define('Task', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        allowNull: false,
         autoIncrement: true
     },
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+
     description: {
         type: DataTypes.TEXT,
         allowNull: false
     },
+
+   
+
     state: {
         type: DataTypes.ENUM('OPEN', 'PENDING', 'COMPLETED', 'CLOSED'),
-        defaultValue: 'OPEN',
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'OPEN'
     },
-    assignedUserId: {
+
+    closedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+
+    closedBy: {
         type: DataTypes.INTEGER,
+        allowNull: true,
         references: {
             model: User,
             key: 'id'
-        },
-        allowNull: true
+        }
     },
-    managerId: {
+
+    assignedUserId: {
         type: DataTypes.INTEGER,
+        allowNull: true,
         references: {
             model: User,
-            key: 'managerId'
-        },
-        allowNull: false
+            key: 'id'
+        }
+    },
+
+    managerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id'
+        }
     }
-}, {
-    timestamps: true,
 });
 
-module.exports = Task;
+
+
+export default Task;

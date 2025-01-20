@@ -1,17 +1,12 @@
-const { Sequelize } = require('sequelize');
+import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('task_planner_db', 'postgres', '1234', {
-    host:'localhost',
-    dialect:'postgres',
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './database.sqlite', // Path to your SQLite database file
+    define: {
+        timestamps: false,
+        freezeTableName: true
+    }
 });
 
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('connection valid');
-    } catch (error) {
-        console.error('Unable to connect', error);
-    }
-})();
-
-module.exports = sequelize;
+export default sequelize;

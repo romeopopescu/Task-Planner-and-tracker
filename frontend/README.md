@@ -1,8 +1,8 @@
 # React + Vite
 
-Pentru a porni server-ul:
-- npm install
-- Instalati fisierul .env.local pe care vi-l trimit. il instalati  in /frontend
-- npm run dev
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Va rog cand vreti sa lucrati, ar fi bine sa va creati un branch nou de fiecare data cand intrati sa faceti ceva. Si ce faceti sa fie intr-un file nou, diferit, ca sa nu ne intercalam prea mult, mersi. https://www.youtube.com/watch?v=MnUd31TvBoU
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
