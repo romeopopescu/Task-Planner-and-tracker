@@ -9,6 +9,7 @@ import CreateUser from './components/CreateUser';
 import ViewUsers from './components/ViewUsers';
 import TaskForm from './components/TaskForm';
 import TaskHistory from './components/TaskHistory';
+import TaskDetails from './components/TaskDetails.jsx';
 // ... other imports for TaskList, TaskForm, etc. (we'll add these later)
 
 const Layout = () => (
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
         element: <Dashboard />
       },
       {
+        path: '/tasks/:id', 
+        element: <TaskDetails />,
+      },
+      {
         path: '/tasks/:id/edit',
         element: <TaskEdit />, 
       },
@@ -40,7 +45,7 @@ const router = createBrowserRouter([
         element: <ViewUsers />,
       },
       {
-        path: '/tasks/new', // Route for creating a new task
+        path: '/tasks/new',
         element: <TaskForm />,
       },
       {
@@ -48,7 +53,7 @@ const router = createBrowserRouter([
         element: <TaskHistory />,
       },
       
-      // ... other protected routes for tasks, user management, etc. (we'll add these later)
+      
     ]
   },
   {

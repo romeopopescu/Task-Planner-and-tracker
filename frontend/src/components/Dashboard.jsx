@@ -28,8 +28,11 @@ const Dashboard = () => {
 
                 setLoadingTasks(true); // Start fetching tasks
                 let response;
+                let toFilter;
                 if (decodedToken.role === 'manager') {
-                    response = await api.get('/tasks');
+                  toFilter = await api.get('/tasks');
+                  response = toFilter;
+                  response.data = toFilter.data.filter(task => task.state !== 'CLOSED');
                 } else if (decodedToken.role === 'user') {
                     response = await api.get(`/tasks?assignedUserId=${decodedToken.id}`);
                 }

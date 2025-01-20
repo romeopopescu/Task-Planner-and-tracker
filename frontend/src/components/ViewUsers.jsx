@@ -1,6 +1,7 @@
 // ViewUsers.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../api';
+import { ListGroup, Card } from 'react-bootstrap';
 
 const ViewUsers = () => {
   const [users, setUsers] = useState();
@@ -32,14 +33,20 @@ const ViewUsers = () => {
   }
 
   return (
-    <ul>
-      {users.map((user) => (
-        <li key={user.id}>
-          {user.username} - {user.role}
-          {/* You can add more user details or actions here */}
-        </li>
-      ))}
-    </ul>
+    <div className='d-flex justify-content-center align-items-center mt-5'>
+      <Card className='shadow'>
+        <Card.Body>
+          <h2 className='text-center'>Users</h2>
+          <ListGroup>
+            {users.map((user) => (
+              <ListGroup.Item key={user.id}>
+                {}{user.username} - {user.role}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };
 
